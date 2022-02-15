@@ -40,3 +40,6 @@ cover/
 
 # Sphinx documentation
 docs/_build/
+
+#misc
+private_data/
