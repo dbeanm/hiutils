@@ -9,6 +9,11 @@ This is pre-alpha, anything might change, i.e. not ready for production use.
 ### Knowledge graphs
 ### Statistics / summary data
 
+# Installation
+```
+pip install hiutils
+```
+
 
 # Annotations
 ## Overview
