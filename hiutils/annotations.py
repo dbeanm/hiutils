@@ -62,17 +62,18 @@ def filter_anns_meta(anns, meta_filter, inplace = False, keep_empty = True):
 		removed += b - len(anns[doc]['entities'])
 		kept += len(anns[doc]['entities'])
 	
-	if inplace:
-		return anns
-	return updated
+	if not inplace:
+		return updated
 
 def filter_anns_cui(anns, filter, inplace = False, keep_empty = True):
 	"""
 	Filter annotations to only retain those in filter
 	"""
 	if filter == None or filter == {}:
-		## API may change to return nothing if inplace
-		return anns
+		if not inplace:
+			return anns
+		#in this case explicitly return None to stop execution here
+		return None
 	removed = 0
 	kept = 0
 	updated = {}
@@ -90,9 +91,8 @@ def filter_anns_cui(anns, filter, inplace = False, keep_empty = True):
 		removed += b - len(anns[doc]['entities'])
 		kept += len(anns[doc]['entities'])
 	
-	if inplace:
-		return anns
-	return updated
+	if not inplace:
+		return updated
 
 def filter_anns(anns, filter = None, meta_filter = None, inplace=False, keep_empty = True):
 	anns = filter_anns_meta(anns, meta_filter, inplace, keep_empty)
@@ -169,9 +169,8 @@ def merge_concepts_docs(anns, groups, inplace=False):
 		if not inplace:
 			aggregated[doc] = {'entities': update}
 	
-	if inplace:
-		return anns
-	return aggregated
+	if not inplace:
+		return aggregated
 
 def merge_concepts(anns_counts, groups, keep_other_concepts=False, keep_empty = True):
 	"""
