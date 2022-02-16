@@ -3,16 +3,14 @@ from collections import Counter, defaultdict
 import pandas as pd
 
 # TODO
-# - aggregate annotations accordign to groups provided as a dict
-# - map document annotations to patient level
-# -- with confidence, meta_anns and count thresholds
-# -- with optional aggregation of annotations
-# -- option to apply the count threshold before or after aggregation (i.e. do you essentially
+# - add confidence filter to ann and meta_ann filters
+# - option to apply the count threshold before or after aggregation (i.e. do you essentially
 #    set the pooled IDs to all be the same at the start or do you process separately and only
 #    count those with count over thresh)
 # - convenience function to handle jsonl annotations
 # - in filter_meta_anns allow meta annotations below confidence threshold to be ignored in filtering
 # - if inplace=True, all the filter functions should not return anything?
+# - function to get first mention date per patient
 
 def filter_anns_meta(anns, meta_filter, inplace = False, keep_empty = True):
 	"""
@@ -203,14 +201,16 @@ def merge_concepts(anns_counts, groups, keep_other_concepts=False, keep_empty = 
 	
 	return aggregated
 
-def anns_counts_to_dataframe(anns_counts, min_count = 1):
+def anns_counts_to_dataframe(anns_counts, min_count = None):
 	"""
 	convert aggregated annotations to an item-level bool dataframe by applying min_count
 	anns_counts: dict - {item_id: {concept_id: count}} i.e. output of aggregate_docs
-	min_count: int - minimum number of times a concept must be detected to count as True
+	min_count: int or None - minimum number of times a concept must be detected to count as True. If None then return the count.
 	"""
 
-	df = pd.DataFrame(anns_counts).T >= min_count
+	df = pd.DataFrame(anns_counts).T
+	if min_count != None:
+		df = df >= min_count
 	return df
 
 			
