@@ -9,7 +9,6 @@ import pandas as pd
 #    count those with count over thresh)
 # - convenience function to handle jsonl annotations
 # - in filter_meta_anns allow meta annotations below confidence threshold to be ignored in filtering
-# - if inplace=True, all the filter functions should not return anything?
 # - function to get first mention date per patient
 
 def filter_anns_meta(anns, meta_filter, inplace = False, keep_empty = True):
