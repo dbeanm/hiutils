@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="hiutils",
-    version="0.2.1",
+    version="0.2.2",
     author="Dan Bean",
     author_email="daniel.bean@kcl.ac.uk",
     description="Utilities for health informatics",
