@@ -11,7 +11,7 @@ import pandas as pd
 # - in filter_meta_anns allow meta annotations below confidence threshold to be ignored in filtering
 # - function to get first mention date per patient
 
-def filter_anns_meta(anns, meta_filter, inplace = False, keep_empty = True):
+def filter_anns_meta(anns, meta_filter, min_conf=0, inplace = False, keep_empty = True):
 	"""
 	anns: dict of {document_id: {'entities': {annotation_id: {'pretty_name': '',
    'cui': '',
@@ -33,6 +33,7 @@ def filter_anns_meta(anns, meta_filter, inplace = False, keep_empty = True):
 	 }
 	
 	meta_filter: dict {meta_name: [accepted values]}
+	min_conf: float - minimum confidence for a meta annotation to be considered
 	inplace: bool - whether the anns dict is modified in place or a modified copy is returned
 			n.b. any keys other than "entities" are ignored and are NOT copied across when inplace=False
 	keep_empty: bool - if False docs with no annotations after filtering will not be present in the output
@@ -47,7 +48,7 @@ def filter_anns_meta(anns, meta_filter, inplace = False, keep_empty = True):
 		b = len(anns[doc]['entities'])
 		filtered = {}
 		for k, v in anns[doc]['entities'].items():
-			keep = all([v['meta_anns'][x]['value'] in meta_filter[x] for x in meta_filter])
+			keep = all([(v['meta_anns'][x]['value'] in meta_filter[x] and v['meta_anns'][x]['confidence'] >= min_conf) for x in meta_filter])
 			if keep:
 				filtered[k] = v
 
