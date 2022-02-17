@@ -3,12 +3,10 @@ from collections import Counter, defaultdict
 import pandas as pd
 
 # TODO
-# - add confidence filter to ann and meta_ann filters
 # - option to apply the count threshold before or after aggregation (i.e. do you essentially
 #    set the pooled IDs to all be the same at the start or do you process separately and only
 #    count those with count over thresh)
 # - convenience function to handle jsonl annotations
-# - in filter_meta_anns allow meta annotations below confidence threshold to be ignored in filtering
 # - function to get first mention date per patient
 
 def filter_anns_meta(anns, meta_filter, min_conf=0, inplace = False, keep_empty = True):
