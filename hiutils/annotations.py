@@ -69,7 +69,7 @@ def filter_anns_cui(anns, filter, min_acc = 0, inplace = False, keep_empty = Tru
 	"""
 	Filter annotations to only retain those in filter
 	anns:
-	filter:
+	filter: list or set - cui that are included. nb use unique_concepts to get an all-pass filter and therefore filter only confidence.
 	mim_acc: float - accuracy threshold (which in medcat is the same as context_similarity)
 	inplace:
 	keep_empty:
@@ -225,3 +225,14 @@ def count_anns(anns):
 	"""
 	count = sum([len(x['entities']) for x in anns.values()])
 	return count
+
+def unique_concepts(anns):
+	"""
+	returns the unique cui detected across all annotations
+	"""
+	seen = set()
+
+	for doc in anns.values():
+		this_doc = [x['cui'] for x in doc['entities'].values()]
+		seen.update(this_doc)
+	return seen
