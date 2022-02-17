@@ -65,11 +65,16 @@ def filter_anns_meta(anns, meta_filter, min_conf=0, inplace = False, keep_empty 
 	if not inplace:
 		return updated
 
-def filter_anns_cui(anns, filter, inplace = False, keep_empty = True):
+def filter_anns_cui(anns, filter, min_acc = 0, inplace = False, keep_empty = True):
 	"""
 	Filter annotations to only retain those in filter
+	anns:
+	filter:
+	mim_acc: float - accuracy threshold (which in medcat is the same as context_similarity)
+	inplace:
+	keep_empty:
 	"""
-	if filter == None or filter == {}:
+	if filter == None or filter == []:
 		if not inplace:
 			return anns
 		#in this case explicitly return None to stop execution here
@@ -79,7 +84,7 @@ def filter_anns_cui(anns, filter, inplace = False, keep_empty = True):
 	updated = {}
 	for doc in anns:
 		b = len(anns[doc]['entities'])
-		filtered = {k:v for k, v in anns[doc]['entities'].items() if v['cui'] in filter}
+		filtered = {k:v for k, v in anns[doc]['entities'].items() if (v['cui'] in filter and v['acc'] >= min_acc)}
 
 		if len(filtered) == 0 and keep_empty == False:
 			continue
@@ -94,9 +99,9 @@ def filter_anns_cui(anns, filter, inplace = False, keep_empty = True):
 	if not inplace:
 		return updated
 
-def filter_anns(anns, filter = None, meta_filter = None, inplace=False, keep_empty = True):
-	anns = filter_anns_meta(anns, meta_filter, inplace, keep_empty)
-	anns = filter_anns_cui(anns, filter, inplace, keep_empty)
+def filter_anns(anns, filter = None, meta_filter = 1, min_acc = 1, min_conf=None, inplace=False, keep_empty = True):
+	anns = filter_anns_meta(anns, meta_filter, min_conf, inplace, keep_empty)
+	anns = filter_anns_cui(anns, filter, min_acc, inplace, keep_empty)
 	return anns
 
 def aggregate_docs(anns, item2doc = None, doc2item = None, keep_empty = True):
