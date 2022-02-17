@@ -74,7 +74,7 @@ def filter_anns_cui(anns, filter, min_acc = 0, inplace = False, keep_empty = Tru
 	inplace:
 	keep_empty:
 	"""
-	if filter == None or filter == []:
+	if filter == None or len(filter) == 0:
 		if not inplace:
 			return anns
 		#in this case explicitly return None to stop execution here
