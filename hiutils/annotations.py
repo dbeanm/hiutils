@@ -99,7 +99,7 @@ def filter_anns_cui(anns, filter, min_acc = 0, inplace = False, keep_empty = Tru
 	if not inplace:
 		return updated
 
-def filter_anns(anns, filter = None, meta_filter = 1, min_acc = 1, min_conf=None, inplace=False, keep_empty = True):
+def filter_anns(anns, filter = None, meta_filter = None, min_acc = 0, min_conf = 0, inplace=False, keep_empty = True):
 	anns = filter_anns_meta(anns, meta_filter, min_conf, inplace, keep_empty)
 	anns = filter_anns_cui(anns, filter, min_acc, inplace, keep_empty)
 	return anns
